@@ -5,11 +5,11 @@ namespace Helix;
 
 public static class GenomeDecoder
 {
-    public static AcyclicNeuralNetwork Decode(Genome genome)
+    public static AcyclicNeuralNetwork DecodeAcyclic(Genome genome)
     {
         var inputCount = genome.Inputs.Count;
-        var outputCount = genome.OuputNeurons.Count;
-        var totalCount = genome.Inputs.Count + genome.HiddenNeurons.Count + genome.OuputNeurons.Count;
+        var outputCount = genome.OutputNeurons.Count;
+        var totalCount = genome.Inputs.Count + genome.HiddenNeurons.Count + genome.OutputNeurons.Count;
 
         // Activation functions
         var actFns = new IActivationFunction?[totalCount];
@@ -19,24 +19,55 @@ public static class GenomeDecoder
         }
         for (var i = 0; i < genome.HiddenNeurons.Count; i++)
         {
-            // TODO: Activation function factory
-            var actFn = genome.HiddenNeurons[i].ActivationFunction switch
-            {
-                _ => new ReLU()
-            };
-
-            actFns[genome.Inputs.Count + i] = actFn;
+            var actFn = genome.HiddenNeurons[i].ActivationFunction;
+            actFns[genome.Inputs.Count + i] = ActivationFunctionFactory.Create(actFn);
         }
-        for (var i = 0; i < genome.OuputNeurons.Count; i++)
+        for (var i = 0; i < genome.OutputNeurons.Count; i++)
         {
-            // TODO: Activation function factory
-            var actFn = genome.OuputNeurons[i].ActivationFunction switch
-            {
-                _ => new ReLU()
-            };
-
-            actFns[genome.Inputs.Count + genome.HiddenNeurons.Count + i] = actFn;
+            var actFn = genome.OutputNeurons[i].ActivationFunction;
+            actFns[genome.Inputs.Count + genome.HiddenNeurons.Count + i] = ActivationFunctionFactory.Create(actFn);
         }
+        
+        var (srcMap, weightMap, integratorMap) = CreateMaps(genome);
+
+        return new AcyclicNeuralNetwork(
+            inputCount, outputCount, totalCount, actFns, srcMap, weightMap, integratorMap);
+    }
+
+    public static CyclicNeuralNetwork Decode(Genome genome)
+    {
+        var inputCount = genome.Inputs.Count;
+        var outputCount = genome.OutputNeurons.Count;
+        var totalCount = genome.Inputs.Count + genome.HiddenNeurons.Count + genome.OutputNeurons.Count;
+
+        // Activation functions
+        var actFns = new IActivationFunction?[totalCount];
+        for (var i = 0; i < genome.Inputs.Count; i++)
+        {
+            actFns[i] = null;
+        }
+
+        for (var i = 0; i < genome.HiddenNeurons.Count; i++)
+        {
+            var actFn = genome.HiddenNeurons[i].ActivationFunction;
+            actFns[genome.Inputs.Count + i] = ActivationFunctionFactory.Create(actFn);
+        }
+
+        for (var i = 0; i < genome.OutputNeurons.Count; i++)
+        {
+            var actFn = genome.OutputNeurons[i].ActivationFunction;
+            actFns[genome.Inputs.Count + genome.HiddenNeurons.Count + i] = ActivationFunctionFactory.Create(actFn);
+        }
+
+        var (srcMap, weightMap, integratorMap) = CreateMaps(genome);
+        
+        return new CyclicNeuralNetwork(
+            inputCount, outputCount, totalCount, actFns, srcMap, weightMap, integratorMap);
+    }
+
+    private static (int[][] srcMap, double[][] weightMap, SignalIntegrator[][] integratorMap) CreateMaps(Genome genome)
+    {
+        var totalCount = genome.Inputs.Count + genome.HiddenNeurons.Count + genome.OutputNeurons.Count;
 
         // Map from Id to idx
         Dictionary<int, int> idToIdx = new Dictionary<int, int>();
@@ -46,18 +77,21 @@ public static class GenomeDecoder
             idToIdx[input.Id] = idx;
             idx++;
         }
+
         foreach (var hidden in genome.HiddenNeurons)
         {
             idToIdx[hidden.Id] = idx;
             idx++;
         }
-        foreach (var output in genome.OuputNeurons)
+
+        foreach (var output in genome.OutputNeurons)
         {
             idToIdx[output.Id] = idx;
             idx++;
         }
-        
+
         // Src idx, weights and integrators map
+
         var srcMap = new int[totalCount][];
         var weightMap = new double[totalCount][];
         var integratorMap = new SignalIntegrator[totalCount][];
@@ -67,10 +101,11 @@ public static class GenomeDecoder
             weightMap[i] = Array.Empty<double>();
             integratorMap[i] = Array.Empty<SignalIntegrator>();
         }
+
         for (var i = 0; i < genome.HiddenNeurons.Count; i++)
         {
             var id = genome.HiddenNeurons[i].Id;
-            var srcNodes = genome.Connections.Where(x => x.EndIdx == id);
+            var srcNodes = genome.Connections.Where(x => x.DestinationIdx == id);
 
             var srcIds = srcNodes.Select(x => idToIdx[x.SourceIdx]).ToArray();
             var srcWeights = srcNodes.Select(x => x.Weight).ToArray();
@@ -80,10 +115,11 @@ public static class GenomeDecoder
             weightMap[genome.Inputs.Count + i] = srcWeights;
             integratorMap[genome.Inputs.Count + i] = srcIntegrators;
         }
-        for (var i = 0; i < genome.OuputNeurons.Count; i++)
+
+        for (var i = 0; i < genome.OutputNeurons.Count; i++)
         {
-            var id = genome.OuputNeurons[i].Id;
-            var srcNodes = genome.Connections.Where(x => x.EndIdx == id);
+            var id = genome.OutputNeurons[i].Id;
+            var srcNodes = genome.Connections.Where(x => x.DestinationIdx == id);
 
             var srcIds = srcNodes.Select(x => idToIdx[x.SourceIdx]).ToArray();
             var srcWeights = srcNodes.Select(x => x.Weight).ToArray();
@@ -94,7 +130,7 @@ public static class GenomeDecoder
             integratorMap[genome.Inputs.Count + genome.HiddenNeurons.Count + i] = srcIntegrators;
         }
 
-        return new AcyclicNeuralNetwork(
-            inputCount, outputCount, totalCount, actFns, srcMap, weightMap, integratorMap);
+        return (srcMap, weightMap, integratorMap);
     }
+
 }

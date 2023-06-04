@@ -2,29 +2,19 @@
 
 internal interface IMutationStrategy
 {
-    Genome Mutate(Genome genome);
+    void Mutate(Genome genome);
 }
 
 internal class MutateWeightsStrategy : IMutationStrategy
 {
-    public Genome Mutate(Genome genome)
+    public void Mutate(Genome genome)
     {
-        var newGenome = genome.Clone();
-
-        return newGenome;
     }
 }
 
-internal class AddConnectionStrategy : IMutationStrategy
+internal class DeleteConnectionStrategy : IMutationStrategy
 {
-    public Genome Mutate(Genome genome)
+    public void Mutate(Genome genome)
     {
-        var newGenome = genome.Clone();
-
-        var newConnection = new Connection(1, 4, 1, SignalIntegrator.Additive);
-
-        newGenome.Connections.Add(newConnection);
-
-        return newGenome;
     }
 }

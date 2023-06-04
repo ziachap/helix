@@ -2,6 +2,9 @@
 
 namespace Helix.NeuralNetwork.ActivationFunctions;
 
+/// <summary>
+/// Rectified linear activation unit (ReLU).
+/// </summary>
 public class ReLU : IActivationFunction
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Helix.Genetics;
 using Helix.NeuralNetwork.ActivationFunctions;
 
 namespace Helix.NeuralNetwork
@@ -17,7 +18,7 @@ namespace Helix.NeuralNetwork
         private readonly Memory<IActivationFunction?> _actFns;
         private readonly Memory<int[]> _srcMap;
         private readonly Memory<double[]> _weightMap;
-        private readonly Memory<SignalIntegrator[]> _integrators;
+        private readonly Memory<ConnectionIntegrator[]> _integrators;
 
         // For all nodes...
         // Use a working value array to store each node's current output value.
@@ -41,7 +42,7 @@ namespace Helix.NeuralNetwork
             Memory<IActivationFunction?> actFns,
             Memory<int[]> srcMap, 
             Memory<double[]> weightMap,
-            Memory<SignalIntegrator[]> integrators)
+            Memory<ConnectionIntegrator[]> integrators)
         {
             _inputCount = inputCount;
             _outputCount = outputCount;
@@ -70,7 +71,7 @@ namespace Helix.NeuralNetwork
             // TODO: This should ideally be a 1D contiguous array, by storing start/end idx for each node
             Span<int[]> srcMap = _srcMap.Span;
             Span<double[]> weightMap = _weightMap.Span;
-            Span<SignalIntegrator[]> integrators = _integrators.Span;
+            Span<ConnectionIntegrator[]> integrators = _integrators.Span;
             
             ref double nodesRef = ref MemoryMarshal.GetReference(nodes);
 
@@ -90,14 +91,14 @@ namespace Helix.NeuralNetwork
                 // Summation connections
                 for (var j = 0; j < srcIdxs.Length; j++)
                 {
-                    if (connIntegrators[j] != SignalIntegrator.Additive) continue;
+                    if (connIntegrators[j] != ConnectionIntegrator.Aggregate) continue;
                     node = Math.FusedMultiplyAdd(nodes[srcIdxs[j]], weights[j], node);
                 }
 
                 // Multiplication connections
                 for (var j = 0; j < srcIdxs.Length; j++)
                 {
-                    if (connIntegrators[j] != SignalIntegrator.Multiplicative) continue;
+                    if (connIntegrators[j] != ConnectionIntegrator.Modulate) continue;
                     node *= nodes[srcIdxs[j]] * weights[j];
                 }
 

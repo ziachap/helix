@@ -1,4 +1,8 @@
-﻿using Helix.NeuralNetwork.Reproduction;
+﻿using System.Runtime.CompilerServices;
+using Helix.Genetics;
+using Helix.Genetics.Reproduction.Asexual;
+
+[assembly: InternalsVisibleTo("Helix.Tests")]
 
 namespace Helix
 {
@@ -9,7 +13,7 @@ namespace Helix
             Console.WriteLine(@"=========================================");
             Console.WriteLine(@"\\\\\\\\\\\\\\\\  HELIX  ////////////////");
             Console.WriteLine(@"=========================================");
-
+            
             //RunNeuralNetTest();
             RunMutationTest();
 
@@ -30,15 +34,15 @@ namespace Helix
                 Console.WriteLine("GENOME " + genome.Id);
                 foreach (var c in genome.HiddenNeurons)
                 {
-                    Console.WriteLine($"- Hidden: {c.Id} | w: {c.ActivationFunction}");
+                    Console.WriteLine($"- Hidden: {((NeuronDescriptor)c).Id} | w: {c.ActivationFunction}");
                 }
-                foreach (var c in genome.OuputNeurons)
+                foreach (var c in genome.OutputNeurons)
                 {
                     Console.WriteLine($"- Output: {c.Id} | w: {c.ActivationFunction}");
                 }
                 foreach (var c in genome.Connections)
                 {
-                    Console.WriteLine($"- Connection: {c.SourceIdx} => {c.DestinationIdx} | w: {c.Weight:0.000} | {c.SignalIntegrator}");
+                    Console.WriteLine($"- Connection: {c.SourceId} => {c.DestinationId} | w: {c.Weight:0.000} | {c.Integrator}");
                 }
 
                 var net = GenomeDecoder.Decode(genome);
@@ -61,6 +65,7 @@ namespace Helix
                 }
 
                 Console.ReadKey();
+                Console.WriteLine();
             }
         }
 
@@ -73,22 +78,22 @@ namespace Helix
                     new InputDescriptor() { Id = 1 },
                     new InputDescriptor() { Id = 2 },
                 },
-                HiddenNeurons = new List<NeuronDescriptor>()
+                HiddenNeurons = new List<HiddenNeuronDescriptor>()
                 {
-                    new NeuronDescriptor()
+                    new HiddenNeuronDescriptor()
                     {
                         Id = 3,
                         ActivationFunction = ActivationFunction.ReLU,
                     }
                 },
-                OuputNeurons = new List<NeuronDescriptor>()
+                OutputNeurons = new List<OutputNeuronDescriptor>()
                 {
-                    new NeuronDescriptor()
+                    new OutputNeuronDescriptor()
                     {
                         Id = 4,
                         ActivationFunction = ActivationFunction.ReLU,
                     },
-                    new NeuronDescriptor()
+                    new OutputNeuronDescriptor()
                     {
                         Id = 5,
                         ActivationFunction = ActivationFunction.ReLU,
@@ -96,11 +101,11 @@ namespace Helix
                 },
                 Connections = new List<Connection>()
                 {
-                    new (1, 3, 0.8, SignalIntegrator.Additive),
-                    new (2, 3, 3, SignalIntegrator.Multiplicative),
-                    new (3, 4, 1.2, SignalIntegrator.Additive),
-                    new (2, 5, -0.5, SignalIntegrator.Additive),
-                    new (4, 4, 0.08, SignalIntegrator.Additive),
+                    new (0, 1, 3, 0.8, ConnectionIntegrator.Aggregate),
+                    new (0, 2, 3, 3, ConnectionIntegrator.Modulate),
+                    new (0, 3, 4, 1.2, ConnectionIntegrator.Aggregate),
+                    new (0, 2, 5, -0.5, ConnectionIntegrator.Aggregate),
+                    new (0, 4, 4, 0.08, ConnectionIntegrator.Aggregate),
                 }
             };
 

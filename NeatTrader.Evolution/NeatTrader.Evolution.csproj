@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+	  <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiveCharts.Geared" Version="1.2.9" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.1.60" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Helix.WPF\Helix.Forms.csproj" />
+    <ProjectReference Include="..\Helix\Helix.csproj" />
+    <ProjectReference Include="..\NeatTrader.Simulator\NeatTrader.Simulator.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,260 @@
+﻿<Window x:Class="NeatTrader.Evolution.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeatTrader.Evolution"
+        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:viewModel="clr-namespace:NeatTrader.Evolution.ViewModel"
+        mc:Ignorable="d"
+        Title="NEAT Trader Evolution" 
+        Height="1000" Width="1700"
+        d:Height="500" d:Width="1200">
+    <Grid>
+        <d:Grid.DataContext>
+            <viewModel:MainModel></viewModel:MainModel>
+        </d:Grid.DataContext>
+
+        <Grid.Resources>
+            <Style x:Key="CleanSeparator" TargetType="wpf:Separator">
+                <Setter Property="IsEnabled" Value="False"></Setter>
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Margin="5" Padding="12 0" Command="{Binding Path=StartCommand}">Start</Button>
+            <Button Margin="5" Padding="12 0" Command="{Binding Path=StopCommand}">Stop</Button>
+            <TextBlock Margin="5" Padding="12 5">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Background" Value="DarkGray"></Setter>
+                        <Setter Property="Foreground" Value="White"></Setter>
+                        <Setter Property="Text" Value="Idle"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=State}" Value="1">
+                                <Setter Property="Background" Value="LimeGreen"></Setter>
+                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="Text" Value="Running"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=State}" Value="2">
+                                <Setter Property="Background" Value="DarkOrange"></Setter>
+                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="Text" Value="Paused"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Button Margin="5" Padding="12 0" Command="{Binding Path=LoadBestGenomeCommand}">Load Best Genome</Button>
+            <Button Margin="5" Padding="12 0" Command="{Binding Path=SaveBestGenomeCommand}">Save Best Genome</Button>
+
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="8*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Panel -->
+            <Grid Grid.Column="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!-- Stats / Metrics -->
+                <ScrollViewer Grid.Row="0" Background="White">
+                    <ItemsControl ItemsSource="{Binding Path=Metrics}">
+                        <d:ItemsControl.Items>
+                            <viewModel:KeyValuePair Key="Hello"></viewModel:KeyValuePair>
+                            <viewModel:KeyValuePair Key="Bye"></viewModel:KeyValuePair>
+                        </d:ItemsControl.Items>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModel:KeyValuePair}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Path=Key}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Path=Value}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+<!--
+                <Grid Grid.Row="0" Background="White" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 2" Text="Generation" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="5 2" Text="{Binding Path=Generation}"/>
+
+                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 2" Text="Best Fitness" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="5 2" Text="{Binding Path=BestFitness}"/>
+
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 2" Text="TotalEvaluationCount" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Margin="5 2" Text="{Binding Path=TotalEvaluationCount}"/>
+
+                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 2" Text="EvaluationsPerSec" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Margin="5 2" Text="{Binding Path=EvaluationsPerSec}"/>
+
+                    <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="4" Grid.Column="0" Margin="5 2" Text="Profit" />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.Profit}"/>
+
+                    <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="5" Grid.Column="0" Margin="5 2" Text="MaxDrawdown" />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.MaxDrawdown}"/>
+
+                    <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="6" Grid.Column="0" Margin="5 2" Text="MaxDrawdownTime" />
+                    <TextBlock Grid.Row="6" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.MaxDrawdownTime}"/>
+
+                    <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="7" Grid.Column="0" Margin="5 2" Text="AverageInventorySize" />
+                    <TextBlock Grid.Row="7" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.AverageInventorySize}"/>
+
+                    <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="8" Grid.Column="0" Margin="5 2" Text="AverageInventoryScore" />
+                    <TextBlock Grid.Row="8" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.AverageInventoryScore}"/>
+
+                    <Border Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="9" Grid.Column="0" Margin="5 2" Text="MaxInventory" />
+                    <TextBlock Grid.Row="9" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.MaxInventory}"/>
+
+                    <Border Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="10" Grid.Column="0" Margin="5 2" Text="ClosedTradeCount" />
+                    <TextBlock Grid.Row="10" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.ClosedTradeCount}"/>
+
+                    <Border Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="11" Grid.Column="0" Margin="5 2" Text="SharpeRatio" />
+                    <TextBlock Grid.Row="11" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.SharpeRatio}"/>
+
+                    <Border Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="12" Grid.Column="0" Margin="5 2" Text="MAE" />
+                    <TextBlock Grid.Row="12" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.MaximumAdverseExcursion}"/>
+
+                    <Border Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#AAA" BorderThickness="0 0 0 1" />
+                    <TextBlock Grid.Row="13" Grid.Column="0" Margin="5 2" Text="Orders" />
+                    <TextBlock Grid.Row="13" Grid.Column="1" Margin="5 2" Text="{Binding Path=SimulationMetrics.OrderCount}"/>
+                </Grid>
+-->
+                <!-- Fitness/Complexity -->
+                <Grid Grid.Row="1" Grid.Column="0" Background="White">
+                    <Border BorderBrush="#EEE" BorderThickness="1"></Border>
+                    <!--
+                    <wpf:CartesianChart Series="{Binding Path=NeatTimeSeries.SeriesCollection}" 
+                                        LegendLocation="Top" 
+                                        DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}">
+                        <wpf:CartesianChart.AxisY>
+                            <wpf:Axis Foreground="Red" FontSize="10" MinValue="0"
+                                      LabelFormatter="{Binding Path=SignalsSeries.DoubleFormatter}"/>
+                            <wpf:Axis Foreground="LimeGreen" FontSize="10" Position="RightTop" MinValue="0"
+                                      LabelFormatter="{Binding Path=NeatTimeSeries.DoubleFormatter}">
+                                <wpf:Axis.Separator>
+                                    <wpf:Separator Style="{StaticResource CleanSeparator}"></wpf:Separator>
+                                </wpf:Axis.Separator>
+                            </wpf:Axis>
+                        </wpf:CartesianChart.AxisY>
+                    </wpf:CartesianChart>
+					-->
+                    <WpfPlot Name="FitnessPlot"></WpfPlot>
+                </Grid>
+
+                <Grid Grid.Row="2" Name="GenomeView" Margin="5">
+                </Grid>
+
+            </Grid>
+
+            <!-- Simulation Graphs -->
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"></RowDefinition>
+                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+               
+                <!-- Prices/Equity -->
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Border BorderBrush="#EEE" BorderThickness="1"></Border>
+                    <WpfPlot Name="HistoryPlot" />
+                </Grid>
+
+                <!-- Position -->
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Border BorderBrush="#EEE" BorderThickness="1"></Border>
+                    <WpfPlot Name="PositionPlot" />
+                </Grid>
+
+                <!-- Signals -->
+                <Grid Grid.Row="2" Grid.Column="0">
+                    <Border BorderBrush="#EEE" BorderThickness="1"></Border>
+                    <WpfPlot Name="SignalsPlot" />
+                </Grid>
+            </Grid>
+
+            <!-- MAP Elites -->
+            <ScrollViewer Grid.Column="2">
+                <StackPanel Orientation="Vertical">
+                    <WpfPlot Name="MapElites1Plot" Margin="10" Height="200" Width="200"></WpfPlot>
+                    <WpfPlot Name="MapElites2Plot" Margin="10" Height="200" Width="200"></WpfPlot>
+                    <WpfPlot Name="MapElites3Plot" Margin="10" Height="200" Width="200"></WpfPlot>
+                    <WpfPlot Name="MapElites4Plot" Margin="10" Height="200" Width="200"></WpfPlot>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Species -->
+            <ScrollViewer Grid.Column="3">
+                <StackPanel Orientation="Vertical">
+                    <Grid Name="Species1" Margin="10" Height="200" Width="200"></Grid>
+                    <Grid Name="Species2" Margin="10" Height="200" Width="200"></Grid>
+                    <Grid Name="Species3" Margin="10" Height="200" Width="200"></Grid>
+                    <Grid Name="Species4" Margin="10" Height="200" Width="200"></Grid>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+    </Grid>
+</Window>

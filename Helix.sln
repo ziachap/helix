@@ -3,7 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix", "Helix\Helix.csproj", "{3728CFE5-F624-485D-9987-EB0A0C8EE4C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helix", "Helix\Helix.csproj", "{3728CFE5-F624-485D-9987-EB0A0C8EE4C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helix.Tests", "Helix.Tests\Helix.Tests.csproj", "{F54AB0D0-005C-42C5-A145-21658975A735}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeatTrader.Simulator", "NeatTrader.Simulator\NeatTrader.Simulator.csproj", "{83BF9D2D-4120-4BCA-87B5-854697C653F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeatTrader.Console", "NeatTrader.Console\NeatTrader.Console.csproj", "{F2A3E53F-A95C-4EEE-BCFE-08C4C1C9D5E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeatTrader.TickDataProcessor", "..\neat.trader\NeatTrader.TickDataProcessor\NeatTrader.TickDataProcessor.csproj", "{EE1ACD81-F255-460B-B0B8-B01DFACF3A03}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeatTrader.Shared", "..\neat.trader\NeatTrader.Shared\NeatTrader.Shared.csproj", "{C26150F4-8D5B-491F-90F6-75DBD1B5A041}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NeatTrader", "NeatTrader", "{87D37446-49F4-4198-A82C-983039716D7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helix.Forms", "Helix.WPF\Helix.Forms.csproj", "{97444E4C-DB94-497D-86EE-8D0BF7460A13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsApp1", "WinFormsApp1\WinFormsApp1.csproj", "{12411C2B-F48A-4066-B6E8-8DD7A3B9D059}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helix.Ninject", "Helix.Ninject\Helix.Ninject.csproj", "{253964A0-4F9D-422A-B5EC-2CDD4BCA727A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeatTrader.Evolution", "NeatTrader.Evolution\NeatTrader.Evolution.csproj", "{31B801FF-2B5D-463B-8DF8-9594E00F611A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +35,49 @@ Global
 		{3728CFE5-F624-485D-9987-EB0A0C8EE4C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3728CFE5-F624-485D-9987-EB0A0C8EE4C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3728CFE5-F624-485D-9987-EB0A0C8EE4C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F54AB0D0-005C-42C5-A145-21658975A735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F54AB0D0-005C-42C5-A145-21658975A735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F54AB0D0-005C-42C5-A145-21658975A735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F54AB0D0-005C-42C5-A145-21658975A735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83BF9D2D-4120-4BCA-87B5-854697C653F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83BF9D2D-4120-4BCA-87B5-854697C653F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83BF9D2D-4120-4BCA-87B5-854697C653F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83BF9D2D-4120-4BCA-87B5-854697C653F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A3E53F-A95C-4EEE-BCFE-08C4C1C9D5E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A3E53F-A95C-4EEE-BCFE-08C4C1C9D5E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A3E53F-A95C-4EEE-BCFE-08C4C1C9D5E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A3E53F-A95C-4EEE-BCFE-08C4C1C9D5E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE1ACD81-F255-460B-B0B8-B01DFACF3A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1ACD81-F255-460B-B0B8-B01DFACF3A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1ACD81-F255-460B-B0B8-B01DFACF3A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE1ACD81-F255-460B-B0B8-B01DFACF3A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C26150F4-8D5B-491F-90F6-75DBD1B5A041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26150F4-8D5B-491F-90F6-75DBD1B5A041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26150F4-8D5B-491F-90F6-75DBD1B5A041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26150F4-8D5B-491F-90F6-75DBD1B5A041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97444E4C-DB94-497D-86EE-8D0BF7460A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97444E4C-DB94-497D-86EE-8D0BF7460A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97444E4C-DB94-497D-86EE-8D0BF7460A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97444E4C-DB94-497D-86EE-8D0BF7460A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12411C2B-F48A-4066-B6E8-8DD7A3B9D059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12411C2B-F48A-4066-B6E8-8DD7A3B9D059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12411C2B-F48A-4066-B6E8-8DD7A3B9D059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12411C2B-F48A-4066-B6E8-8DD7A3B9D059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{253964A0-4F9D-422A-B5EC-2CDD4BCA727A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{253964A0-4F9D-422A-B5EC-2CDD4BCA727A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{253964A0-4F9D-422A-B5EC-2CDD4BCA727A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{253964A0-4F9D-422A-B5EC-2CDD4BCA727A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31B801FF-2B5D-463B-8DF8-9594E00F611A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31B801FF-2B5D-463B-8DF8-9594E00F611A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31B801FF-2B5D-463B-8DF8-9594E00F611A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31B801FF-2B5D-463B-8DF8-9594E00F611A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EE1ACD81-F255-460B-B0B8-B01DFACF3A03} = {87D37446-49F4-4198-A82C-983039716D7E}
+		{C26150F4-8D5B-491F-90F6-75DBD1B5A041} = {87D37446-49F4-4198-A82C-983039716D7E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {796E11C4-B247-4373-B725-7D59FC0BB5E1}

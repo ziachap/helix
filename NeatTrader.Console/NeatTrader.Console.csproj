@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Helix.WPF\Helix.Forms.csproj" />
+    <ProjectReference Include="..\Helix\Helix.csproj" />
+    <ProjectReference Include="..\NeatTrader.Simulator\NeatTrader.Simulator.csproj" />
+  </ItemGroup>
+
+</Project>
